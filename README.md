@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW cohort_analysis
 AS WITH customer_revenue AS (
          SELECT s.customerkey,
             s.orderdate,
-            sum(s.quantity::double precision * s.netprice * s.exchangerate) AS total_net_revenue,
+            sum(s.quantity * s.netprice * s.exchangerate) AS total_net_revenue,
             count(s.orderkey) AS num_orders,
             c.countryfull,
             c.age,
