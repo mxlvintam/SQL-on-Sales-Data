@@ -16,10 +16,12 @@ This project explores customer retention, lifetime value, and retention of an e-
 # The Analysis
 
 ### Creating View
-Since analysis will be using cohort data, here is the script!
+Since analysis will be using cohort data, here is the script! 
+
+*Use "DROP VIEW cohort_analysis;" as the first line if you would like to alter the view.*
 
 ```sql
-CREATE OR REPLACE VIEW public.cohort_analysis
+CREATE OR REPLACE VIEW cohort_analysis
 AS WITH customer_revenue AS (
          SELECT s.customerkey,
             s.orderdate,
@@ -39,11 +41,10 @@ AS WITH customer_revenue AS (
     num_orders,
     countryfull,
     age,
-    givenname,
-    surname,
+    CONCAT(TRIM(givenname), ' ', TRIM(surname)) AS cleaned_name,
     min(orderdate) OVER (PARTITION BY customerkey) AS first_purchase_date,
     EXTRACT(year FROM min(orderdate) OVER (PARTITION BY customerkey)) AS cohort_year
-   FROM customer_revenue cr;
+FROM customer_revenue AS cr;
 ```
 
 ### 1. Customer Segmentation
